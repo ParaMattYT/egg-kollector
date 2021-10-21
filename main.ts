@@ -1,22 +1,75 @@
 namespace SpriteKind {
     export const TREE = SpriteKind.create()
     export const king = SpriteKind.create()
+    export const rock = SpriteKind.create()
 }
+sprites.onOverlap(SpriteKind.Food, SpriteKind.rock, function (sprite, otherSprite) {
+    eg.setPosition(randint(0, 153), randint(0, 113))
+})
 sprites.onOverlap(SpriteKind.Food, SpriteKind.king, function (sprite, otherSprite) {
     eg.setPosition(randint(0, 153), randint(0, 113))
+})
+info.onLifeZero(function () {
+    scene.setBackgroundImage(assets.image`cityscape`)
+    animation.runImageAnimation(
+    eg,
+    assets.animation`blank`,
+    200,
+    true
+    )
+    eg.setPosition(10500, 10500)
+    animation.runImageAnimation(
+    bird,
+    assets.animation`blank`,
+    200,
+    true
+    )
+    animation.runImageAnimation(
+    ROCK,
+    assets.animation`blank`,
+    200,
+    true
+    )
+    animation.runImageAnimation(
+    TREE,
+    assets.animation`blank`,
+    200,
+    true
+    )
+    animation.runImageAnimation(
+    mySprite,
+    assets.animation`blank`,
+    200,
+    true
+    )
+    animation.runImageAnimation(
+    KING,
+    assets.animation`blank`,
+    200,
+    true
+    )
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     eg.setPosition(randint(0, 153), randint(0, 113))
     info.changeScoreBy(1)
-    music.baDing.play()
+    music.jumpUp.play()
 })
 sprites.onOverlap(SpriteKind.Food, SpriteKind.TREE, function (sprite, otherSprite) {
     eg.setPosition(randint(0, 153), randint(0, 113))
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+})
+let bird: Sprite = null
+let ROCK: Sprite = null
+let KING: Sprite = null
 let eg: Sprite = null
+let TREE: Sprite = null
+let mySprite: Sprite = null
+info.setLife(1)
 info.setScore(0)
 scene.setBackgroundImage(assets.image`PigBackground`)
-let mySprite = sprites.create(img`
+mySprite = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -42,7 +95,7 @@ assets.animation`pigIdle`,
 true
 )
 mySprite.setPosition(18, 81)
-let TREE = sprites.create(img`
+TREE = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -93,7 +146,7 @@ assets.animation`eg`,
 true
 )
 eg.setStayInScreen(true)
-let KING = sprites.create(img`
+KING = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -118,6 +171,31 @@ assets.animation`kingPigIdle`,
 true
 )
 KING.setPosition(10, 102)
-forever(function () {
-    music.playMelody("E E F D E E F D ", 120)
-})
+ROCK = sprites.create(assets.image`rock`, SpriteKind.rock)
+ROCK.setPosition(108, 101)
+bird = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Enemy)
+animation.runImageAnimation(
+bird,
+assets.animation`redBird`,
+200,
+true
+)
+bird.setPosition(300, 15)
+bird.follow(mySprite, 30)
