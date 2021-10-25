@@ -199,3 +199,13 @@ true
 )
 bird.setPosition(300, 15)
 bird.follow(mySprite, 30)
+forever(function () {
+    if (info.score() == 1) {
+        animation.runImageAnimation(
+        mySprite,
+        assets.animation`pigIdle0`,
+        200,
+        true
+        )
+    }
+})
